@@ -271,11 +271,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   p_leaguePlayer: {fileID: 3532639766118257042, guid: eee589485296a9448b870bf1faef86d0, type: 3}
-  numberOfPlayerToGenerate: 5
+  numberOfPlayerToGenerate: 8
   p_DraftPlayerList: []
   t_Teams:
-  - {fileID: 1311937900}
-  - {fileID: 581673311}
+  - {fileID: 5825141868852925384, guid: b57518befa55373429011eff5fe0c269, type: 3}
+  - {fileID: 6309682074977266492, guid: 622290255573ddb4f82a30ac11d99de5, type: 3}
   ui_viewport: {fileID: 1877981383}
 --- !u!1 &144480625
 GameObject:
@@ -468,54 +468,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &581673310
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 581673312}
-  - component: {fileID: 581673311}
-  m_Layer: 0
-  m_Name: Team B
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &581673311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 581673310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f35d62d26d0a194e8a5c9f0b91956f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  t_teamName: Team B
-  t_currentPlayerOnTheTeamIndex: 0
-  t_maxNumberOfPlayerOnTeam: 12
-  t_players: []
---- !u!4 &581673312
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 581673310}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1092,54 +1044,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1214350250}
   m_CullTransparentMesh: 1
---- !u!1 &1311937899
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1311937901}
-  - component: {fileID: 1311937900}
-  m_Layer: 0
-  m_Name: Team A
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1311937900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1311937899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f35d62d26d0a194e8a5c9f0b91956f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  t_teamName: Team A
-  t_currentPlayerOnTheTeamIndex: 0
-  t_maxNumberOfPlayerOnTeam: 12
-  t_players: []
---- !u!4 &1311937901
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1311937899}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1357971521
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,5 +1259,3 @@ SceneRoots:
   - {fileID: 1043719051}
   - {fileID: 93857143}
   - {fileID: 43401683}
-  - {fileID: 1311937901}
-  - {fileID: 581673312}

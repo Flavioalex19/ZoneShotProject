@@ -35,10 +35,20 @@ public class DraftManager : MonoBehaviour
 
     void Start()
     {
-        print(p_DraftPlayerList.Count + " Avaliable Players");
+        //print(p_DraftPlayerList.Count + " Avaliable Players");
+        //Generate the PLayers
         GeneratePlayers();
     }
-
+    private void Update()
+    {
+        //verify if there is no more players to draft
+        if (ui_viewport.transform.childCount == 0)
+        {
+            Debug.Log("No more players in the UI viewport.");
+            //End The Draft
+            EndDraft();
+        }
+    }
     private void GeneratePlayers()
     {
         for (int i = 0; i < numberOfPlayerToGenerate; i++)
@@ -83,6 +93,7 @@ public class DraftManager : MonoBehaviour
         print("added");
         // Add player to the current team and update UI
         Team currentTeam = t_Teams[t_currentTeamIndex];
+        
 
         if (currentTeam.AddPlayerToTeam(player))
         {
@@ -117,5 +128,9 @@ public class DraftManager : MonoBehaviour
     public void BeginDraft()
     {
         // Draft logic
+    }
+    public void EndDraft()
+    {
+        print("Draft is Over");
     }
 }

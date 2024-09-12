@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] DraftManager dm_DraftManager; 
     public static GameManager instance;
 
+    //Teams
+    public List<Team> teams = new List<Team>();
+
     void Awake()
     {
         if (instance == null)
@@ -25,6 +28,7 @@ public class GameManager : MonoBehaviour
         if (dm_DraftManager == null)
         {
             dm_DraftManager = FindObjectOfType<DraftManager>();
+            print(dm_DraftManager.name);
         }
     }
 

@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     // Age
     [Tooltip("21 - 35")]
     [SerializeField] private int ps_age;
-    [SerializeField] private int ps_OVR;
+    [SerializeField] public int ps_OVR;//CHANGE!!!!!!!!!!!!!!!!!
     [SerializeField] private int ps_PotencialOVR;
     private int ps_MaxAge = 35;
     private int ps_EarlyAge = 21;
@@ -112,5 +112,9 @@ public class Player : MonoBehaviour
     public int GetOVR()
     {
         return ps_OVR;
+    }
+    public void SetOVR(int newOVR)
+    {
+        ps_OVR=newOVR;
     }
 }

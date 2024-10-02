@@ -6,8 +6,8 @@ public class Team : MonoBehaviour
 {
 
     [SerializeField] public  string t_teamName;
-    [SerializeField] int t_currentPlayerOnTheTeamIndex = 0;
-    [SerializeField] int t_maxNumberOfPlayerOnTeam = 8;
+    [SerializeField] public int t_currentPlayerOnTheTeamIndex = 0;
+    [SerializeField] public int t_maxNumberOfPlayerOnTeam = 8;
     [SerializeField] public List<Player> t_playersList = new List<Player>();
 
     public bool AddPlayerToTeam(Player newPlayer)
@@ -28,6 +28,10 @@ public class Team : MonoBehaviour
     public void RestIndex()
     {
         t_currentPlayerOnTheTeamIndex = 0;
+    }
+    public void ResetList()
+    {
+        t_playersList.Clear();
     }
     public List<Player> GetPlayerList()
     {

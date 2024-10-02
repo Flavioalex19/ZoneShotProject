@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -37,18 +38,21 @@ public class DraftManager : MonoBehaviour
 
     void Start()
     {
-        #region Clear save tst region
-        
-        SaveSystem.ClearSave();
-        SaveSystem.ClearTeamData(t_Teams);
-        // Clear the players list for each team in memory
-        foreach (Team team in t_Teams)
-        {
-            team.GetPlayerList().Clear();
-            team.RestIndex();
-        }
-        
-        #endregion
+          /*
+          #region Clear save tst region
+          SaveSystem.ClearSave();
+          SaveSystem.ClearTeamData(t_Teams);
+          // Clear the players list for each team in memory
+          foreach (Team team in t_Teams)
+          {
+              ClearSaveData();
+              team.GetPlayerList().Clear();
+              team.RestIndex();
+              team.ResetList();
+          }
+          #endregion
+          */
+
         for (int i = 0; i < t_Teams.Count; i++)
         {
             print(t_Teams[i].t_playersList.Count + " " + t_Teams[i].t_teamName);
@@ -63,8 +67,9 @@ public class DraftManager : MonoBehaviour
             {
                 for (int j = 0; j < t_Teams[i].GetPlayerList().Count; j++)
                 {
-                    print(t_Teams[i].t_teamName + " " + t_Teams[i].GetPlayerList()[j].GetOVR());
+                    //print(t_Teams[i].t_teamName + " " + t_Teams[i].GetPlayerList()[j].GetOVR() + " " + "This my OVR");
                 }
+                //SceneManager.LoadScene(1);
             }
             
         }
@@ -81,29 +86,28 @@ public class DraftManager : MonoBehaviour
     {
         if (GameManager.instance.state == GameStates.Draft)
         {
-            if (ui_viewport != null)
+            //verify if there is no more players to draft
+            if (ui_viewport.transform.childCount == 0)
             {
-                //verify if there is no more players to draft
-                if (ui_viewport.transform.childCount == 0)
-                {
-                    Debug.Log("No more players in the UI viewport.");
-                    //End The Draft
-                    EndDraft();
-                }
-                if (Input.GetKeyDown(KeyCode.Escape) && SaveSystem.LoadPlayers() != null)
-                {
-                    print("Clear save");
-                    SaveSystem.ClearSave();
-                    SaveSystem.ClearTeamData(t_Teams);
-
-                }
+                Debug.Log("No more players in the UI viewport.");
+                //End The Draft
+                EndDraft();
+                
             }
-            
+            /*
+            if (Input.GetKeyDown(KeyCode.Escape) && SaveSystem.LoadPlayers() != null)
+            {
+                print("Clear save");
+                SaveSystem.ClearSave();
+                SaveSystem.ClearTeamData(t_Teams);
+
+            }
+            */
         }
         //print(t_Teams[0].t_teamName + " " + t_Teams[0].GetPlayerList().Count);
         for (int i = 0; i < t_Teams.Count; i++)
         {
-            print(t_Teams[i].t_playersList.Count + " " + t_Teams[i].t_teamName);
+            //print(t_Teams[i].t_playersList.Count + " " + t_Teams[i].t_teamName + " " + "This is print in the draft manager");
         }
 
     }
@@ -116,11 +120,13 @@ public class DraftManager : MonoBehaviour
 
             if (playerComponent != null && ui_viewport!=null)
             {
+                playerComponent.SetPlayerName();
                 playerComponent.SetMaxPotencial();
                 playerComponent.SetOVRAndStats();
                 p_DraftPlayerList.Add(playerComponent);
                 CreatePlayerButton(playerComponent);
-
+                //Debug.Log("Generated player with OVR: " + playerComponent.GetOVR());
+                Debug.Log("Name" + " " + playerComponent.PlayerFirstName);
 
             }
         }
@@ -148,7 +154,7 @@ public class DraftManager : MonoBehaviour
     }
     public void AddPlayerToTeam(Player player)
     {
-        print("added");
+        //print("added");
         // Add player to the current team and update UI
         Team currentTeam = t_Teams[t_currentTeamIndex];
         
@@ -190,15 +196,26 @@ public class DraftManager : MonoBehaviour
     }
     public void EndDraft()
     {
-        print("Draft is Over");
-        if(ui_viewport.transform.childCount == 0) SceneManager.LoadScene(1);
+        //print("Draft is Over");
+        if (AreAllTeamsFull())
+        {
+            print("Full");
+            if (GameManager.instance.state == GameStates.Draft) GameManager.instance.state = GameStates.Match;
+            SceneManager.LoadScene(1);
+        }
         else
         {
+            print("NOT FULL");
             SaveSystem.SavePlayers(t_Teams);
             if (GameManager.instance.state == GameStates.Draft) GameManager.instance.state = GameStates.Match;
             SceneManager.LoadScene(1);
         }
-        
+        /*
+        SaveSystem.SavePlayers(t_Teams);
+        if (GameManager.instance.state == GameStates.Draft) GameManager.instance.state = GameStates.Match;
+        SceneManager.LoadScene(1);
+        */
+        //print("Saved");
         /*
         for (int i = 0; i < t_Teams.Count; i++)
         {
@@ -207,6 +224,17 @@ public class DraftManager : MonoBehaviour
         */
     }
     #endregion
+    public bool AreAllTeamsFull()
+    {
+        foreach (Team team in t_Teams)
+        {
+            if (team.GetPlayerList().Count < team.t_maxNumberOfPlayerOnTeam)
+            {
+                return false; // Found a team that is not full
+            }
+        }
+        return true; // All teams are full
+    }
     #region Save/Load
     //Save/Load
     public void LoadPlayerData()
@@ -215,16 +243,40 @@ public class DraftManager : MonoBehaviour
 
         if (playerDataList != null)
         {
-            LoadPlayersToTeams(playerDataList);
+            //print(t_Teams[0].GetPlayerList().Count + " " + t_Teams[0].name + "DRAFT MANAGER CHECK!!!!");
+            
+            // Only load player data if the teams' player lists are empty
+            for (int i = 0; i < t_Teams.Count; i++)
+            {
+                if (t_Teams[i].GetPlayerList().Count != 0) // Check if the team already has players
+                {
+                    
+                    print("Load´Player to teams!!!!!!!!!!!!!!");
+                    LoadPlayersToTeams(playerDataList);
+                    
+                    
+                }
+                else
+                {
+                    Debug.Log(t_Teams[i].t_teamName + " already has players. Skipping load.");
+                    //LoadPlayersToTeams(playerDataList);
+                    
+                }
+            }
+            
+            
+
         }
         else
         {
             Debug.LogWarning("No player data was loaded.");
+            
         }
     }
 
     public void LoadPlayersToTeams(List<PlayerData> playerDataList)
     {
+        /*
         // Assuming t_Teams is a list of teams in the same order as the playerDataList
         int currentTeamIndex = 0;
 
@@ -236,15 +288,91 @@ public class DraftManager : MonoBehaviour
             // Create player from data
             Player player = CreatePlayerFromData(playerData);
 
+            // Set the OVR for the player
+            player.SetOVR(playerData.playerOVR); // Add this line to set OVR
+            //print(playerData.playerOVR + "OVR OF PLAYER");
             // Add player to the team
             team.GetPlayerList().Add(player);
 
             // Move to the next team if needed
             currentTeamIndex = (currentTeamIndex + 1) % t_Teams.Count;
         }
+        */
+        /*
+        // Assuming t_Teams is a list of teams in the same order as the playerDataList
+        int currentTeamIndex = 0;
+
+        foreach (PlayerData playerData in playerDataList)
+        {
+            // Get the team from the list
+            Team team = t_Teams[currentTeamIndex];
+
+            // Check if the team is full before adding a player
+            if (team.GetPlayerList().Count < team.t_maxNumberOfPlayerOnTeam)
+            {
+                // Create player from data
+                Player player = CreatePlayerFromData(playerData);
+
+                // Set the OVR for the player
+                player.SetOVR(playerData.playerOVR); // Set OVR from PlayerData
+
+                // Check if the player already exists in the team
+                if (!team.GetPlayerList().Contains(player))
+                {
+                    // Add player to the team
+                    team.GetPlayerList().Add(player);
+                }
+                // Add player to the team
+                //team.GetPlayerList().Add(player);
+            }
+
+            // Move to the next team if needed
+            currentTeamIndex = (currentTeamIndex + 1) % t_Teams.Count;
+        }
+        */
+        // Clear existing players in the teams to avoid duplication
+        ClearTeams();
+
+        // Assuming t_Teams is a list of teams in the same order as the playerDataList
+        int currentTeamIndex = 0;
+
+        foreach (PlayerData playerData in playerDataList)
+        {
+            // Get the team from the list
+            Team team = t_Teams[currentTeamIndex];
+
+            // Check if the team is full before adding a player
+            if (team.GetPlayerList().Count < team.t_maxNumberOfPlayerOnTeam)
+            {
+                // Create player from data
+                Player player = CreatePlayerFromData(playerData);
+
+                // Set the OVR for the player
+                player.SetOVR(playerData.playerOVR); // Set OVR from PlayerData
+
+                // Check if the player already exists in the team using PlayerID
+                if (!team.GetPlayerList().Any(existingPlayer => existingPlayer.PlayerFirstName == player.PlayerFirstName))
+                {
+                    // Add player to the team
+                    team.GetPlayerList().Add(player);
+                }
+            }
+
+            // Move to the next team if needed
+            currentTeamIndex = (currentTeamIndex + 1) % t_Teams.Count;
+        }
+    }
+    // Clear existing players in the teams
+    private void ClearTeams()
+    {
+        foreach (Team team in t_Teams)
+        {
+            team.GetPlayerList().Clear();
+        }
     }
     public static Player CreatePlayerFromData(PlayerData data)
     {
+        /*
         // Implement this method to create a Player instance from PlayerData
         Player player = new Player
         {
@@ -254,6 +382,51 @@ public class DraftManager : MonoBehaviour
             //playerPotential = data.playerPotential
         };
         return player;
+        */
+        // Instantiate the player prefab and get the Player component
+        GameObject newPlayer = Instantiate(DraftManager.instance.p_leaguePlayer);
+        Player player = newPlayer.GetComponent<Player>();
+
+        // Now set the data from PlayerData
+        player.SetOVR(data.playerOVR);
+        // Add other data fields as needed
+
+        return player;
     }
     #endregion
+    public void ClearSaveData()
+    {
+        /*
+        // Clear the player lists for all teams
+        for (int i = 0; i < t_Teams.Count; i++)
+        {
+            t_Teams[i].GetPlayerList().Clear(); // Clear the player list for each team
+        }
+
+        // Now call the SaveSystem to clear the saved data
+        SaveSystem.ClearSave();
+        SaveSystem.ClearTeamData(t_Teams);
+
+        Debug.Log("All teams' player lists have been cleared, and save data has been wiped.");
+        */
+        // Ensure the player lists are cleared for all teams in memory
+        foreach (Team team in t_Teams)
+        {
+            team.GetPlayerList().Clear();  // Clear player list in memory
+        }
+
+        // Now delete the saved data
+        SaveSystem.ClearSave();
+        Debug.Log("All teams' player lists have been cleared, and save data has been wiped.");
+    }
+    public void PrintPlayer()
+    {
+        for (int i = 0; i < t_Teams.Count; i++)
+        {
+            for (int j = 0; j < t_Teams[i].t_playersList.Count; j++)
+            {
+                print(t_Teams[i].t_playersList[j].PlayerFirstName + " " + t_Teams[i].t_playersList[j].GetOVR() + " This is FROM DRAF MANAGER");
+            }
+        }
+    }
 }

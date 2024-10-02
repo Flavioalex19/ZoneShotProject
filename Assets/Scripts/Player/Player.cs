@@ -3,11 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum FirstNames
+{
+    Razen,
+    Ceasar,
+    Ryu,
+    Dmoc,
+    Kaiba,
+    Aldebaran,
+    Clark,
+    Asimoov,
+    Phillip,
+    Richard,
+    Virgil,
+    Dante
+}
+
 public class Player : MonoBehaviour
 {
+    FirstNames FirstNames;
     // All Stats
     //[SerializeField] private Team ps_myTeam;
     [SerializeField] GameObject bt_PlayerInfo;
+    public string PlayerFirstName;
     // Age
     [Tooltip("21 - 35")]
     [SerializeField] private int ps_age;
@@ -103,6 +121,17 @@ public class Player : MonoBehaviour
 
         ps_OVR = (ps_consitancy + ps_awareness + ps_Junking + ps_Control + ps_Shooting + ps_Positioning + ps_Stealing + ps_Guarding + ps_Pressure +
             ps_InsideScoring + ps_MidScoring + ps_OutsideScoring) / 12;
+    }
+    public void SetPlayerName()
+    {
+        // Get the values of the enum as an array
+        FirstNames[] names = (FirstNames[])System.Enum.GetValues(typeof(FirstNames));
+
+        // Get a random index
+        int randomIndex = Random.Range(0, names.Length);
+
+        // Set PlayerName to the string representation of the randomly selected enum value
+        PlayerFirstName = names[randomIndex].ToString();
     }
     //Gets
     public GameObject GetPlayerInfoButton()

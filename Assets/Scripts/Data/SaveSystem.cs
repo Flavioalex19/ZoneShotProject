@@ -74,6 +74,7 @@ public class SaveSystem : MonoBehaviour
         foreach (Team team in teams)
         {
             team.GetPlayerList().Clear(); // Clear the player list for each team
+            team.ResetList();
         }
 
         if (File.Exists(saveFilePath))

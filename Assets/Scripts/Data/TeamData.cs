@@ -26,7 +26,7 @@ public class PlayerData
 
     public PlayerData(Player player)
     {
-        //playerName = player.GetPlayerName();  // Ensure these methods exist
+        playerName = player.PlayerFirstName;  // Ensure these methods exist
         playerOVR = player.GetOVR();
         //playerPotential = player.GetPotential();
     }
